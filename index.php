@@ -82,6 +82,12 @@ $data2=$database->prepare("select *  from users  where id= 1");
 $data2->execute();
 $data2=$data2->fetchObject();// convert pdo  to object
 echo $data2->name;
+echo '--------------------------';
+echo '<br>';
+$data3=$database->prepare("select *  from users  ");
+$data3->execute();
+echo $data3->rowCount(); // number of rows after select or update , and you  mustn't include converting to object or array
+
 /*if($database)
   //  echo 'connection succesfully';
 else 
