@@ -42,24 +42,22 @@
 </body>
 </html>
 <?php 
-$username="root";
-$password="";
-$database=new PDO("mysql:host=localhost;dbname=food_db;charset=utf8;",$username,$password);
+include("connection.php");
 if(isset($_POST['submit']))
 {
     $name=$_POST['name'];
     $email=$_POST['email'];
 
-    $number=$_POST['phone'];
+    $phone=$_POST['phone'];
 
     $password=$_POST['pwd'];
-    if($name!=='' && $email!=='' &&$number!=='' && $password!=='') {
+    if($name!=='' && $email!=='' &&$phone!=='' && $password!=='') {
     $sql =$database->prepare("insert into users (name,email,number,password) values(:name ,:email,:number,:password)");
     $sql->bindParam("name",$name);
     $sql->bindParam("email",$email);
-    $sql->bindParam("number",$number);
+    $sql->bindParam("number",$phone);
     $sql->bindParam("password",$password);
-
+// can you use bindparam any sql command
 
 $sql->execute();
     }
