@@ -50,11 +50,17 @@ if(isset($_POST['submit']))
     $name=$_POST['name'];
     $email=$_POST['email'];
 
-    $phone=$_POST['phone'];
+    $number=$_POST['phone'];
 
     $password=$_POST['pwd'];
-    if($name!=='' && $email!=='' &&$phone!=='' && $password!=='') {
-    $sql =$database->prepare("insert into users (name,email,number,password) values('$name' ,'$email',$phone,$password)");
+    if($name!=='' && $email!=='' &&$number!=='' && $password!=='') {
+    $sql =$database->prepare("insert into users (name,email,number,password) values(:name ,:email,:number,:password)");
+    $sql->bindParam("name",$name);
+    $sql->bindParam("email",$email);
+    $sql->bindParam("number",$number);
+    $sql->bindParam("password",$password);
+
+
 $sql->execute();
     }
 
@@ -87,7 +93,8 @@ echo '<br>';
 $data3=$database->prepare("select *  from users  ");
 $data3->execute();
 echo $data3->rowCount(); // number of rows after select or update , and you  mustn't include converting to object or array
-
+echo '<br>';
+echo $data3->columnCount(); //number of column after select or update , and you  mustn't include converting to object or array
 /*if($database)
   //  echo 'connection succesfully';
 else 
