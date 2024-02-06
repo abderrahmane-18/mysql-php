@@ -44,7 +44,8 @@
   <br>
   <div class="form-group">
   <label for="myfile">Select files:</label>
-  <input type="file"  name="file" ><br><br>
+  <input type="file"  name="file"  accept="image/*"><br><br> 
+  <!-- image/*  mean all types of images -->
   </div>
   <br>
   <input type="submit" name="submit" value="Submit">
@@ -89,7 +90,7 @@ if(isset($_POST['submit']))
     $sql =$database->prepare("insert into products (name,category,price,image) values(:name ,:category,:price,:image)");
  // $sql =$database->prepare("insert into products (price) values($price)");
 
-    $sql->bindParam("name",$fileName);
+    $sql->bindParam("name",$fileName); // name is the name of column id DataBase
   $sql->bindParam("category",$selected);
     $sql->bindParam("price",$price);
     $sql->bindParam("image",$positon);
@@ -98,5 +99,16 @@ if(isset($_POST['submit']))
 $sql->execute();
    // }
 }
+$sql1 =$database->prepare("select * from products");
+$sql1->execute();
+echo('<br>');
+echo '---------------------';
+echo('<br>');
+echo('<br>');
+foreach ($sql1 as $f)
+{
+  echo "<a href='".$f["image"] ."' download>".$f["name"]."</a><br>";
+}
+
 
 ?>
