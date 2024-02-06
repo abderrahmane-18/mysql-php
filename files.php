@@ -1,26 +1,4 @@
-<?php
-include("connection.php");
-if(isset($_POST['submit']))
-{
-    $name=$_POST['name'];
-    $email=$_POST['email'];
 
-    $phone=$_POST['phone'];
-
-    $password=$_POST['pwd'];
-    if($name!=='' && $email!=='' &&$phone!=='' && $password!=='') {
-    $sql =$database->prepare("insert into users (name,email,number,password) values(:name ,:email,:number,:password)");
-    $sql->bindParam("name",$name);
-    $sql->bindParam("email",$email);
-    $sql->bindParam("number",$phone);
-    $sql->bindParam("password",$password);
-// can you use bindparam any sql command
-
-$sql->execute();
-    }
-}
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,16 +14,18 @@ $sql->execute();
 
 <form action="" method="post" enctype="multipart/form-data">
     <div class="container">
+      <!--
 <div class="form-group">
     <label for="exampleInputName">Name</label>
     <input type="text" class="form-control" id="exampleInputName" name="name"  placeholder="Enter Your Name" required>
   </div>
+-->
   <br>
 
 <div class="form-group">
 <label for="exampleInputCategory">Category</label>
 
-    <select name="category" id="exampleInputCategory">
+    <select name="category" id="exampleInputCategory" > 
         <option value="drink">drink</option>
         <option value="pizza">pizza</option>
         <option value="sandiwitch">sandiwitch</option>
@@ -64,13 +44,59 @@ $sql->execute();
   <br>
   <div class="form-group">
   <label for="myfile">Select files:</label>
-  <input type="file" id="myfile" name="myfile" multiple><br><br>
+  <input type="file"  name="file" ><br><br>
   </div>
   <br>
-  <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+  <input type="submit" name="submit" value="Submit">
 
   </div>
 </form>
 <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<?php
+include("connection.php");
+if(isset($_POST['submit']))
+{
+  
+    
+       $selected = $_POST['category'];
+   
+
+    $price=$_POST['price'];
+    echo $price;
+    echo '<br>';
+    echo '<br>';
+    echo $selected;
+    echo '<br>';
+    echo '<br>';
+
+    $fileType=$_FILES["file"]["type"];
+    echo $fileType;
+    echo '<br>';
+    $fileName=$_FILES["file"]["name"];
+    echo $fileName;
+
+    $file=$_FILES["file"]["tmp_name"];
+    move_uploaded_file($file,"files/".$fileName);
+    $positon="files/".$fileName;
+    echo '<br>';
+    echo $positon;
+    echo '<br>';
+
+
+  // if( $selected!=='' && $fileName!==''  &&$price!=='' && $positon!=='') {
+    $sql =$database->prepare("insert into products (name,category,price,image) values(:name ,:category,:price,:image)");
+ // $sql =$database->prepare("insert into products (price) values($price)");
+
+    $sql->bindParam("name",$fileName);
+  $sql->bindParam("category",$selected);
+    $sql->bindParam("price",$price);
+    $sql->bindParam("image",$positon);
+// can you use bindparam any sql command
+
+$sql->execute();
+   // }
+}
+
+?>
