@@ -78,7 +78,9 @@ if(isset($_POST['submit']))
     $fileName=$_FILES["file"]["name"];
     echo $fileName;
 
-    $file=$_FILES["file"]["tmp_name"];
+   //$file=$_FILES["file"]["tmp_name"]; //some with a code bottom;
+   $file=file_get_contents($_FILES["file"]["tmp_name"]);
+
     move_uploaded_file($file,"files/".$fileName);
     $positon="files/".$fileName;
     echo '<br>';
@@ -96,7 +98,12 @@ if(isset($_POST['submit']))
     $sql->bindParam("image",$positon);
 // can you use bindparam any sql command
 
-$sql->execute();
+if($sql->execute())
+{
+  echo 'success';
+}
+else 
+echo 'failed';
    // }
 }
 $sql1 =$database->prepare("select * from products");
