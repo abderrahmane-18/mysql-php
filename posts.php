@@ -45,6 +45,7 @@
   </tbody>
 </table> 
 <!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -54,56 +55,44 @@
       </div>
       <div class="modal-body">
         <!-- Post Form -->
-        <form id="postForm" method="post" >
+        <form id="postForm" method="post" action="posts.php">
           <div class="mb-3">
             <label for="postName" class="form-label">Post Name</label>
             <input type="text" name="postName" class="form-control" id="postName" placeholder="Enter post name" required>
           </div>
           <div class="mb-3">
             <label for="postBody" class="form-label">Post Body</label>
-            <textarea class="form-control" name=postBody id="postBody" rows="3" placeholder="Enter post body" required></textarea>
+            <textarea class="form-control" name="postBody" id="postBody" rows="3" placeholder="Enter post body" required></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" name="submit" id="savePost">Save Post</button>
           </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" name="submit"  id="savePost">Save Post</button>
       </div>
     </div>
   </div>
 </div>
+
 </body>
 </html>
 
 
-<?php 
-$username="root";
-$password="";
-$database=new PDO("mysql:host=localhost;dbname=social-media-php;charset=utf8;",$username,$password);
+<?php
+$username = "root";
+$password = "";
+$database = new PDO("mysql:host=localhost;dbname=social-media-php;charset=utf8;", $username, $password);
 
-if(isset($_POST['submit']))
-{
-  echo '-----------';
-  $name_post=$_POST['postName'];
-  $name_body=$_POST['postBody'];
-  echo $name_post;
-  /*
-  $sql =$database->prepare("insert into posts (title,body) values(:title ,:body)");
-  $sql->bindParam("title",$name_post);
-    $sql->bindParam("body",$name_body);
-    */
-
-    
-
-
-
+if (isset($_POST['submit'])) {
+    $name_post = $_POST['postName'];
+    $name_body = $_POST['postBody'];
+  
+    $sql = $database->prepare("INSERT INTO posts (title, body) VALUES (:title, :body)");
+    $sql->bindParam(":title", $name_post);
+    $sql->bindParam(":body", $name_body);
+    $sql->execute();
 }
-$sql =$database->prepare("select *  from posts where id ='1'");
 
-$sql->execute();
-foreach ( $sql as $i)
-{
-echo $i['body'] ;
-echo '<br>';
-}
+// Redirect back to the page where the form was submitted
+exit();
 ?>
